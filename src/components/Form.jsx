@@ -1,10 +1,17 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 
+import { useUrlPosition } from "../hooks/useUrlPosition";
 import styles from "./Form.module.css";
 import Button from "./Button";
+import BackButton from "./BackButton";
+import Message from "./Message";
+import Spinner from "./Spinner";
+import "react-datepicker/dist/react-datepicker.css";
+import { useCities } from "../contexts/CitiesContext";
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -15,13 +22,72 @@ export function convertToEmoji(countryCode) {
 }
 
 function Form() {
+  const [lat, lng] = useUrlPosition();
+  const { createCity, isLoading } = useCities();
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
+
+  const [visitedDate, setVisitedDate] = useState(new Date());
   const [notes, setNotes] = useState("");
+  const [emoji, setEmoji] = useState("");
+  const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
+  const [geocodingError, setGeocodigError] = useState("");
+  const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!lat && !lng) return;
+    async function fetchCityData() {
+      try {
+        setIsLoadingGeocoding(true);
+        setGeocodigError("");
+        const res = await fetch(
+          `${BASE_URL}?latitude=${lat}&longitude=${lng}`
+        ).then((res) => res.json());
+
+        if (!res.countryCode) {
+          throw new Error(
+            "That does not seem to be a city. Click somewhere else 😉"
+          );
+        }
+        setCityName(res.city || res.locality || "");
+        setCountry(res.countryName);
+        setEmoji(convertToEmoji(res.countryCode));
+        setDate("");
+      } catch (err) {
+        setGeocodigError(err.message);
+      } finally {
+        setIsLoadingGeocoding(false);
+      }
+    }
+    const res = fetchCityData();
+  }, [lat, lng]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!cityName || !date) return;
+    const newCity = {
+      cityName,
+      country,
+      emoji,
+      date,
+      notes,
+      position: { lat, lng },
+    };
+    console.log("newCity is ... ", newCity);
+    createCity(newCity);
+    navigate("/app/cities");
+  }
+  if (isLoadingGeocoding) return <Spinner />;
+  if (!lat && !lng)
+    return <Message message="Start by clicking somewhere on the map" />;
+  if (geocodingError) return <Message message={geocodingError} />;
+
   return (
-    <form className={styles.form}>
+    <form
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
@@ -29,15 +95,16 @@ function Form() {
           onChange={(e) => setCityName(e.target.value)}
           value={cityName}
         />
-        {/* <span className={styles.flag}>{emoji}</span> */}
+        <span className={styles.flag}>{emoji}</span>
       </div>
 
       <div className={styles.row}>
         <label htmlFor="date">When did you go to {cityName}?</label>
-        <input
+        <DatePicker
           id="date"
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
+          selected={date}
+          onChange={(date) => setDate(date)}
+          dateFormat="dd/MM/yyyy"
         />
       </div>
 
@@ -52,15 +119,7 @@ function Form() {
 
       <div className={styles.buttons}>
         <Button type="primary">Add</Button>
-        <Button
-          type="back"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(-1);
-          }}
-        >
-          &larr; Back
-        </Button>
+        <BackButton />
       </div>
     </form>
   );

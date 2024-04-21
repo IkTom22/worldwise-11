@@ -37,28 +37,28 @@
       "id": 98443197
     },
     {
-      "cityName": "Fato",
-      "country": "Portugal",
-      "emoji": "🇵🇹",
-      "date": "2027-10-31T15:59:59.138Z",
-      "notes": "My favorite city so far!",
+      "cityName": "Sassari",
+      "country": "Italy",
+      "emoji": "🇮🇹",
+      "date": "2024-03-22T11:00:00.000Z",
+      "notes": "er",
       "position": {
-        "lat": 38.727881642324164,
-        "lng": -9.140900099907554
+        "lat": "40.730608477796636",
+        "lng": "8.536376953125002"
       },
-      "id": 73934532
+      "id": 98443200
     },
     {
-      "cityName": "Barcelona",
-      "country": "Spain",
-      "emoji": "🇪🇸",
-      "date": "2027-07-15T08:22:53.976Z",
-      "notes": "",
+      "cityName": "London",
+      "country": "United Kingdom of Great Britain and Northern Ireland (the)",
+      "emoji": "🇬🇧",
+      "date": "2024-04-14T12:00:00.000Z",
+      "notes": "awd",
       "position": {
-        "lat": 40.46635901755316,
-        "lng": -3.7133789062500004
+        "lat": "51.53779400311784",
+        "lng": "-0.37902832031250006"
       },
-      "id": 17806732
+      "id": 98443201
     }
   ]
 }
