@@ -37,28 +37,16 @@
       "id": 98443197
     },
     {
-      "cityName": "Sassari",
-      "country": "Italy",
-      "emoji": "🇮🇹",
-      "date": "2024-03-22T11:00:00.000Z",
-      "notes": "er",
-      "position": {
-        "lat": "40.730608477796636",
-        "lng": "8.536376953125002"
-      },
-      "id": 98443200
-    },
-    {
-      "cityName": "London",
+      "cityName": "Windsor",
       "country": "United Kingdom of Great Britain and Northern Ireland (the)",
       "emoji": "🇬🇧",
-      "date": "2024-04-14T12:00:00.000Z",
-      "notes": "awd",
+      "date": "2024-05-29T12:00:00.000Z",
+      "notes": "",
       "position": {
-        "lat": "51.53779400311784",
-        "lng": "-0.37902832031250006"
+        "lat": "51.45400691005982",
+        "lng": "-0.6152343750000001"
       },
-      "id": 98443201
+      "id": 98443198
     }
   ]
 }

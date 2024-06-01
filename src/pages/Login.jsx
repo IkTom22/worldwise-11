@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../contexts/FakeAuthContect";
+import { useAuth } from "../contexts/FakeAuthContext";
 import styles from "./Login.module.css";
 import PageNav from "../components/PageNav";
 import { useNavigate } from "react-router-dom";
